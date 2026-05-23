@@ -263,7 +263,7 @@ setStreamingText('');
         </div>
       </main>
 
-     <footer className="footer">
+<footer className="footer">
   
     href="https://www.lulu.com/shop/arturo-moreno/despertar-no-es-como-lo-esperabas/paperback/product-p6w9jnk.html"
     target="_blank"
