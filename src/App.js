@@ -263,15 +263,24 @@ setStreamingText('');
         </div>
       </main>
 
-      <footer className="footer">
-        <button
-          className="signature"
-          onClick={() => setShowModal(true)}
-          aria-label="Abrir información de contacto de ArtMoreno"
-        >
-          -=ArtMoreno=-
-        </button>
-      </footer>
+     <footer className="footer">
+  
+    href="https://www.lulu.com/shop/arturo-moreno/despertar-no-es-como-lo-esperabas/paperback/product-p6w9jnk.html"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="book-button"
+    aria-label="Ver el libro Despertar no es lo que Esperabas"
+  >
+    ✦ Consigue el Libro ✦
+  </a>
+  <button
+    className="signature"
+    onClick={() => setShowModal(true)}
+    aria-label="Abrir información de contacto de ArtMoreno"
+  >
+    -=ArtMoreno=-
+  </button>
+</footer>
 
       {showModal && <ContactModal onClose={() => setShowModal(false)} />}
     </div>
