@@ -32,7 +32,7 @@ module.exports = async function handler(req, res) {
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
+        'claude-sonnet-4-20250514',
       },
       body: JSON.stringify(payload),
     });
