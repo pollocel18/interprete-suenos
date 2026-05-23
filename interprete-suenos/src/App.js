@@ -148,34 +148,10 @@ export default function App() {
         throw new Error(err.error?.message || 'Error al consultar el oráculo');
       }
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let fullText = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split('\n');
-
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const data = line.slice(6).trim();
-            if (data === '[DONE]') continue;
-            try {
-              const parsed = JSON.parse(data);
-              if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
-                fullText += parsed.delta.text;
-                setStreamingText(fullText);
-              }
-            } catch {}
-          }
-        }
-      }
-
-      setMessages(prev => [...prev, { role: 'assistant', content: fullText }]);
-      setStreamingText('');
+     const data = await response.json();
+const fullText = data.content[0].text;
+setMessages(prev => [...prev, { role: 'assistant', content: fullText }]);
+setStreamingText('');
     } catch (err) {
       setError(err.message || 'El velo no pudo ser descorrido en este momento.');
     } finally {
