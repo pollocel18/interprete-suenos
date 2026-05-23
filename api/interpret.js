@@ -1,13 +1,6 @@
 module.exports = async function handler(req, res) {
-  // Log para debug
-  console.log('METHOD:', req.method);
-  console.log('HEADERS:', JSON.stringify(req.headers));
-
   if (req.method !== 'POST') {
-    return res.status(405).json({ 
-      error: 'Method not allowed', 
-      receivedMethod: req.method 
-    });
+    return res.status(405).json({ error: 'Method not allowed', receivedMethod: req.method });
   }
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -20,7 +13,7 @@ module.exports = async function handler(req, res) {
     if (typeof body === 'string') body = JSON.parse(body);
 
     const payload = {
-      model: 'claude-sonnet-4-5-20251001',
+      model: 'claude-sonnet-4-20250514',
       max_tokens: 1024,
       system: body.system,
       messages: body.messages,
@@ -32,7 +25,7 @@ module.exports = async function handler(req, res) {
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': apiKey,
-        'claude-sonnet-4-20250514',
+        'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify(payload),
     });
