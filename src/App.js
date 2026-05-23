@@ -139,7 +139,7 @@ export default function App() {
           max_tokens: 1024,
           system: SYSTEM_PROMPT,
           messages: apiMessages,
-          stream: true,
+          stream: false,
         }),
       });
 
