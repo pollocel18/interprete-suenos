@@ -10,8 +10,11 @@ module.exports = async function handler(req, res) {
 
   try {
     const body = {
-      ...req.body,
-      model: 'claude-sonnet-4-20250514',  // ← modelo actualizado
+      model: 'claude-sonnet-4-5-20251001',
+      max_tokens: 1024,
+      system: req.body.system,
+      messages: req.body.messages,
+      stream: false,
     };
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -27,16 +30,11 @@ module.exports = async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error('Anthropic error:', JSON.stringify(data));
       return res.status(response.status).json(data);
     }
 
     return res.status(200).json(data);
   } catch (error) {
-    console.error('Handler error:', error.message, error.stack);
-    return res.status(500).json({ 
-      error: error.message,
-      stack: error.stack,
-      apiKeyExists: !!process.env.ANTHROPIC_API_KEY
-    });
+    return res.status(500).json({ error: error.message });
   }
+};
