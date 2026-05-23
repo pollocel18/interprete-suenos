@@ -29,8 +29,8 @@
   --border-subtle: rgba(155, 109, 202, 0.15);
   --border-mid: rgba(155, 109, 202, 0.3);
   --font-display: 'Cinzel Decorative', serif;
-  --font-body: 'Cormorant Garamond', serif;
-  --font-prose: 'IM Fell English', serif;
+  --font-body: 'Lora', serif;
+  --font-prose: 'Lora', serif;
 }
 
 html, body, #root {
@@ -41,8 +41,8 @@ body {
   background: var(--bg);
   color: var(--text-primary);
   font-family: var(--font-body);
-  font-size: 18px;
-  line-height: 1.7;
+  font-size: 17px;
+  line-height: 1.8;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
