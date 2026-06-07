@@ -3,6 +3,12 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed', receivedMethod: req.method });
   }
 
+  // Verificación de secret
+  const secret = req.headers['x-api-secret'];
+  if (!secret || secret !== process.env.API_SECRET_KEY) {
+    return res.status(401).json({ error: 'No autorizado' });
+  }
+
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ error: 'API key not configured' });

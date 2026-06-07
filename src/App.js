@@ -160,17 +160,20 @@ export default function App() {
     }));
 
     try {
-      const response = await fetch('/api/interpret', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1024,
-          system: SYSTEM_PROMPT,
-          messages: apiMessages,
-          stream: false,
-        }),
-      });
+     const response = await fetch('/api/interpret', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-secret': process.env.REACT_APP_API_SECRET,
+  },
+  body: JSON.stringify({
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 1024,
+    system: SYSTEM_PROMPT,
+    messages: apiMessages,
+    stream: false,
+  }),
+});
 
       if (!response.ok) {
         const err = await response.json();
