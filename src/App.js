@@ -1,5 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  "https://jnnhyrmalmsdepvzjhfa.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impubmh5cm1hbG1zZGVwdnpqaGZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwNTA2OTgsImV4cCI6MjA5NDYyNjY5OH0.09K8Es_SMn9PrnU-pBrGq954k8NFkAi93yVCYGfTckA"
+);
 
 const SYSTEM_PROMPT = `Eres el Intérprete de Sueños del universo Despertar.
 
@@ -135,6 +141,14 @@ export default function App() {
 
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
+
+  useEffect(() => {
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    if (!session) {
+      window.location.href = "https://universo-portal-art.vercel.app";
+    }
+  });
+}, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
