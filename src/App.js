@@ -143,11 +143,19 @@ export default function App() {
   const textareaRef = useRef(null);
 
   useEffect(() => {
-  supabase.auth.getSession().then(({ data: { session } }) => {
-    if (!session) {
-      window.location.href = "https://universo-portal-art.vercel.app";
-    }
-  });
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
+
+  if (token) {
+    supabase.auth.setSession({ access_token: token, refresh_token: token })
+      .then(({ error }) => {
+        if (error) window.location.href = "https://universo-portal-art.vercel.app";
+      });
+  } else {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) window.location.href = "https://universo-portal-art.vercel.app";
+    });
+  }
 }, []);
 
   useEffect(() => {
