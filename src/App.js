@@ -169,33 +169,55 @@ export default function App() {
     setError('');
     setHasStarted(true);
     setInput('');
-
-    const newUserMessage = { role: 'user', content: text };
-    const updatedMessages = [...messages, newUserMessage];
-    setMessages(updatedMessages);
     setLoading(true);
     setStreamingText('');
 
-    const apiMessages = updatedMessages.map(m => ({
-      role: m.role,
-      content: m.content,
-    }));
-
     try {
-     const response = await fetch('/api/interpret', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'x-api-secret': process.env.REACT_APP_API_SECRET,
-  },
-  body: JSON.stringify({
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 1024,
-    system: SYSTEM_PROMPT,
-    messages: apiMessages,
-    stream: false,
-  }),
-});
+      // Verificar contador de consultas
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        const contador = await fetch('https://cumpleanos-app.onrender.com/api/consulta', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-secret': process.env.REACT_APP_API_SECRET,
+          },
+          body: JSON.stringify({
+            user_id: session.user.id,
+            email: session.user.email,
+          }),
+        });
+        const contadorData = await contador.json();
+        if (!contadorData.permitido) {
+          setError('Has usado tus 3 consultas gratuitas. Visita el Universo Despertar para continuar.');
+          setLoading(false);
+          return;
+        }
+      }
+
+      const newUserMessage = { role: 'user', content: text };
+      const updatedMessages = [...messages, newUserMessage];
+      setMessages(updatedMessages);
+
+      const apiMessages = updatedMessages.map(m => ({
+        role: m.role,
+        content: m.content,
+      }));
+
+      const response = await fetch('/api/interpret', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-secret': process.env.REACT_APP_API_SECRET,
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1024,
+          system: SYSTEM_PROMPT,
+          messages: apiMessages,
+          stream: false,
+        }),
+      });
 
       if (!response.ok) {
         const err = await response.json();
