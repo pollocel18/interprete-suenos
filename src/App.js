@@ -145,6 +145,8 @@ export default function App() {
   useEffect(() => {
   const params = new URLSearchParams(window.location.search);
   const token = params.get("token");
+  const perfil = params.get("perfil_id");
+  if (perfil) sessionStorage.setItem("perfil_id", perfil);
 
   if (token) {
     supabase.auth.setSession({ access_token: token, refresh_token: token })
@@ -226,8 +228,19 @@ export default function App() {
 
       const data = await response.json();
       const fullText = data.content[0].text;
-      setMessages(prev => [...prev, { role: 'assistant', content: fullText }]);
-      setStreamingText('');
+setMessages(prev => [...prev, { role: 'assistant', content: fullText }]);
+setStreamingText('');
+
+// Guardar en bitácora si hay perfil_id
+const perfilId = sessionStorage.getItem("perfil_id");
+if (perfilId) {
+  await supabase.from("bitacora").insert([{
+    perfil_id: perfilId,
+    app: "suenos",
+    consulta: text,
+    respuesta: fullText,
+  }]);
+}
     } catch (err) {
       setError(err.message || 'El velo no pudo ser descorrido en este momento.');
     } finally {
