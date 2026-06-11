@@ -232,7 +232,7 @@ setMessages(prev => [...prev, { role: 'assistant', content: fullText }]);
 setStreamingText('');
 
 // Guardar en bitácora si hay perfil_id
-const perfilId = sessionStorage.getItem("perfil_id");
+const perfilId = new URLSearchParams(window.location.search).get("perfil_id");
 if (perfilId) {
   await supabase.from("bitacora").insert([{
     perfil_id: perfilId,
