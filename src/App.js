@@ -233,6 +233,8 @@ setStreamingText('');
 
 // Guardar en bitácora si hay perfil_id
 const perfilId = new URLSearchParams(window.location.search).get("perfil_id");
+console.log("perfil_id:", perfilId);
+console.log("URL:", window.location.search);
 if (perfilId) {
   await supabase.from("bitacora").insert([{
     perfil_id: perfilId,
